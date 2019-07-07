@@ -15,18 +15,32 @@
  *  limitations under the License.
  */
 
-namespace RocketMQ.NetClient.Interop
+using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using QueueSelectorCallback = RocketMQ.NetClient.Interop.ProducerWrap.QueueSelectorCallback;
+
+namespace RocketMQ.NetClient.Producer
 {
-    public static class ConstValues
+    public interface IProducer :  IDisposable
     {
-        public const string RocketMQDriverDllName = "K:\\阿里编程之夏\\coding\\rocketmq-externals\\rocketmq-client-dotnet\\example\\ProducerSample\\bin\\Release\\rocketmq-client-cpp.dll";
-
-        public const string DiagnosticListenerName = "rocketmq-driver";
-
-        public const string RocketMQProducerStart = "rocketmq.producer.start";
+        /// <summary>
+        /// 获取 producer 的 native 句柄。
+        /// </summary>
+       
         
-        public const string RocketMQProducerStop = "rocketmq.producer.stop";
+        bool StartProducer();
 
-        public const string RocketMQProducerDestroy = "rocketmq.producer.destroy";
+        bool ShutdownProducer();
+
+        void SetDiagnosticListener(DiagnosticListener diagnosticListener);
+
+        SendResult SendMessageSync(IMessageBuilder builder);
+
+        SendResult SendMessageOneway(IMessageBuilder builder);
+
+        SendResult SendMessageOrderly(IMessageBuilder builder, QueueSelectorCallback callback, int autoRetryTimes = 0, string args = "");
+
+
     }
 }

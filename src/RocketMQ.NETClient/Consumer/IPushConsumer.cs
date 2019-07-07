@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -15,18 +15,18 @@
  *  limitations under the License.
  */
 
-namespace RocketMQ.NetClient.Interop
+using MessageCallBack = RocketMQ.NetClient.Interop.PushConsumerWrap.MessageCallBack;
+
+namespace RocketMQ.NetClient.Consumer
 {
-    public static class ConstValues
+    public interface IPushConsumer
     {
-        public const string RocketMQDriverDllName = "K:\\阿里编程之夏\\coding\\rocketmq-externals\\rocketmq-client-dotnet\\example\\ProducerSample\\bin\\Release\\rocketmq-client-cpp.dll";
+        bool StartPushConsumer();
 
-        public const string DiagnosticListenerName = "rocketmq-driver";
-
-        public const string RocketMQProducerStart = "rocketmq.producer.start";
+        bool ShutdownPushConsumer();
         
-        public const string RocketMQProducerStop = "rocketmq.producer.stop";
+        void Subscribe(string topic, string expression);
 
-        public const string RocketMQProducerDestroy = "rocketmq.producer.destroy";
+        bool RegisterMessageCallback(MessageCallBack callBack);
     }
 }

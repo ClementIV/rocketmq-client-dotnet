@@ -35,11 +35,11 @@ namespace RocketMQ.NetClient.Producer
 
         void SetDiagnosticListener(DiagnosticListener diagnosticListener);
 
-        SendResult SendMessageSync(IMessageBuilder builder);
+        SendResult SendMessageSync(HandleRef message);
 
-        SendResult SendMessageOneway(IMessageBuilder builder);
+        SendResult SendMessageOneway(HandleRef message);
 
-        SendResult SendMessageOrderly(IMessageBuilder builder, QueueSelectorCallback callback, int autoRetryTimes = 0, string args = "");
+        SendResult SendMessageOrderly(HandleRef message, QueueSelectorCallback callback, string args = "");
 
 
     }
