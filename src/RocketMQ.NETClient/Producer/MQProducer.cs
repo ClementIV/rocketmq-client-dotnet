@@ -9,13 +9,14 @@ using static RocketMQ.NetClient.Interop.ProducerWrap;
 
 namespace RocketMQ.NetClient.Producer
 {
-    class MQProducer : IProducer
+    public class MQProducer : IProducer
     {
         #region Default Options
         private int SendMsgTimeout = 3000;
         private int MaxMessageSize = 4194304;
         private string LogPath = "./producer_log.txt";
         private LogLevel logLevel = LogLevel.Trace;
+        private int autoRetryTimes = 2;
         #endregion
 
         #region producer handle
@@ -45,7 +46,7 @@ namespace RocketMQ.NetClient.Producer
             this.SetProducerLogLevel(this.logLevel);
             this.SetProducerSendMessageTimeout(this.SendMsgTimeout);
             this.SetProducerMaxMessageSize(this.MaxMessageSize);
-
+            this.SetAutoRetryTimes(this.autoRetryTimes);
         }
 
         public MQProducer(string groupName, DiagnosticListener diagnosticListener = null)
@@ -257,6 +258,11 @@ namespace RocketMQ.NetClient.Producer
             return;
         }
 
+        public void SetAutoRetryTimes(int times)
+        {
+            this.autoRetryTimes = times;
+            return;
+        }
         #endregion
 
         #region start and shutdown
@@ -298,9 +304,21 @@ namespace RocketMQ.NetClient.Producer
             return shutdownResult == 0;
         }
 
+        public bool DestroyProducer()
+        {
+            var destroyResult = ProducerWrap.DestroyProducer(this._handleRef);
+
+            if (this._diagnosticListener?.IsEnabled(ConstValues.RocketMQProducerDestroy) ?? false)
+            {
+                this._diagnosticListener.Write(ConstValues.RocketMQProducerDestroy, new
+                {
+                    destroyResult
+                });
+            }
+
+            return destroyResult == 0;
+        }
         #endregion
-
-
 
         #region Send Message API
 
@@ -318,22 +336,24 @@ namespace RocketMQ.NetClient.Producer
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
-        public SendResult SendMessageSync(IMessageBuilder builder)
+       
+        public SendResult SendMessageSync(HandleRef message)
         {
-            var message = builder.Build();
+          
             if (message.Handle == IntPtr.Zero)
             {
-                throw new ArgumentException(nameof(builder));
+                throw new ArgumentException(nameof(message));
             }
 
-            var result = ProducerWrap.SendMessageSync(this._handleRef, message, out var sendResult);
+            
+            var result = ProducerWrap.SendMessageSync(this._handleRef, message, out CSendResult sendResultStruct);
 
             return result == 0
                 ? new SendResult
                 {
-                    SendStatus = sendResult.sendStatus,
-                    Offset = sendResult.offset,
-                    MessageId = sendResult.msgId
+                    SendStatus = sendResultStruct.sendStatus,
+                    Offset = sendResultStruct.offset,
+                    MessageId = sendResultStruct.msgId
                 }
                 : null;
         }
@@ -345,18 +365,18 @@ namespace RocketMQ.NetClient.Producer
         /// <param name="builder">消息</param>
         /// <param name="cSendSuccessCallback">成功回调函数</param>
         /// <param name="cSendExceptionCallback">异常处理函数</param>
-        public void SendMessageAsync(IMessageBuilder builder, CSendSuccessCallback cSendSuccessCallback, CSendExceptionCallback cSendExceptionCallback) {
+        public int SendMessageAsync(HandleRef message, CSendSuccessCallback cSendSuccessCallback, CSendExceptionCallback cSendExceptionCallback) {
 
-            var message = builder.Build();
+           
             if (message.Handle == IntPtr.Zero)
             {
-                throw new ArgumentException(nameof(builder));
+                throw new ArgumentException(nameof(message));
             }
 
-            ProducerWrap.SendMessageAsync(this._handleRef, message, cSendSuccessCallback, cSendExceptionCallback);
+           var sendResult = ProducerWrap.SendMessageAsync(this._handleRef, message, cSendSuccessCallback, cSendExceptionCallback);
 
 
-            return;
+            return sendResult;
         }
 
         /// <summary>
@@ -364,12 +384,12 @@ namespace RocketMQ.NetClient.Producer
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
-        public SendResult SendMessageOneway(IMessageBuilder builder)
+        public SendResult SendMessageOneway(HandleRef message)
         {
-            var message = builder.Build();
+            
             if (message.Handle == IntPtr.Zero)
             {
-                throw new ArgumentException(nameof(builder));
+                throw new ArgumentException(nameof(message));
             }
 
             var result = ProducerWrap.SendMessageOneway(this._handleRef, message);
@@ -392,16 +412,16 @@ namespace RocketMQ.NetClient.Producer
         /// <param name="autoRetryTimes"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public SendResult SendMessageOrderly(IMessageBuilder builder, QueueSelectorCallback callback, int autoRetryTimes = 0, string args = "")
+        public SendResult SendMessageOrderly(HandleRef message, QueueSelectorCallback callback, string args = "")
         {
-            var message = builder.Build();
+           
             if (message.Handle == IntPtr.Zero)
             {
-                throw new ArgumentException(nameof(builder));
+                throw new ArgumentException(nameof(message));
             }
 
             var argsPtr = Marshal.StringToBSTR(args);
-            var result = ProducerWrap.SendMessageOrderly(this._handleRef, message, callback, argsPtr, autoRetryTimes, out var sendResult);
+            var result = ProducerWrap.SendMessageOrderly(this._handleRef, message, callback, argsPtr, this.autoRetryTimes, out var sendResult);
 
             return result == 0
                 ? new SendResult

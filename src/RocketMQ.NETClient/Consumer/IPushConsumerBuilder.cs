@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 
+using RocketMQ.NetClient.Interop;
 using System;
 
 namespace RocketMQ.NetClient.Consumer

@@ -26,5 +26,7 @@ namespace RocketMQ.NetClient.Interop
         public const string RocketMQProducerStart = "rocketmq.producer.start";
         
         public const string RocketMQProducerStop = "rocketmq.producer.stop";
+
+        public const string RocketMQProducerDestroy = "rocketmq.producer.destroy";
     }
 }
