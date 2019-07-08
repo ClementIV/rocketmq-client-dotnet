@@ -107,7 +107,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\RocketMQ.NETClient\RocketMQ.NETClient.csproj">
+    <ProjectReference Include="..\..\..\src\RocketMQ.NETClient\RocketMQ.NETClient.csproj">
       <Project>{F95C2026-A21A-4A46-A175-489861CDF3A8}</Project>
       <Name>RocketMQ.NETClient</Name>
     </ProjectReference>
