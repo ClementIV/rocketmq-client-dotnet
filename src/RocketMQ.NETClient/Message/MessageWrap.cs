@@ -15,10 +15,11 @@
  *  limitations under the License.
  */
 
+using RocketMQ.NetClient.Interop;
 using System;
 using System.Runtime.InteropServices;
 
-namespace RocketMQ.NetClient.Interop
+namespace RocketMQ.NetClient.Message
 {
     public static class MessageWrap
     {

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
-using static RocketMQ.NetClient.Interop.ProducerWrap;
+using static RocketMQ.NetClient.Producer.ProducerWrap;
 
 namespace RocketMQ.NetClient.Producer
 {
@@ -14,7 +14,7 @@ namespace RocketMQ.NetClient.Producer
         #region Default Options
         private int SendMsgTimeout = 3000;
         private int MaxMessageSize = 4194304;
-        private string LogPath = "./producer_log.txt";
+        private string LogPath = Environment.CurrentDirectory + "\\producer_log.txt";
         private LogLevel logLevel = LogLevel.Trace;
         private int autoRetryTimes = 2;
         #endregion
@@ -40,6 +40,7 @@ namespace RocketMQ.NetClient.Producer
             {
                 throw new RocketMQProducerException($"create producer error, ptr is {handle}");
             }
+            Console.WriteLine(this.LogPath);
 
             this._handleRef = new HandleRef(this, handle);
             this.SetProducerLogPath(this.LogPath);
@@ -230,7 +231,7 @@ namespace RocketMQ.NetClient.Producer
 
         public void SetProducerCompressLevel(int level)
         {
-            if (level < 0)
+            if ((level < 0||level >9)&&level!=-1)
             {
                 throw new ArgumentOutOfRangeException(nameof(level));
             }
@@ -359,25 +360,7 @@ namespace RocketMQ.NetClient.Producer
         }
 
 
-        /// <summary>
-        /// 异步消息发送
-        /// </summary>
-        /// <param name="builder">消息</param>
-        /// <param name="cSendSuccessCallback">成功回调函数</param>
-        /// <param name="cSendExceptionCallback">异常处理函数</param>
-        public int SendMessageAsync(HandleRef message, CSendSuccessCallback cSendSuccessCallback, CSendExceptionCallback cSendExceptionCallback) {
-
-           
-            if (message.Handle == IntPtr.Zero)
-            {
-                throw new ArgumentException(nameof(message));
-            }
-
-           var sendResult = ProducerWrap.SendMessageAsync(this._handleRef, message, cSendSuccessCallback, cSendExceptionCallback);
-
-
-            return sendResult;
-        }
+        
 
         /// <summary>
         /// 单向消息发送
@@ -445,17 +428,6 @@ namespace RocketMQ.NetClient.Producer
                 return 0;
             });
 
-        private static ProducerWrap.CSendSuccessCallback _CSendSuccessCallback = new ProducerWrap.CSendSuccessCallback(
-            (result) =>
-            {
-                Console.WriteLine($"Success send : {result.msgId} , Message status: {result.sendStatus}");
-            });
-
-        private static ProducerWrap.CSendExceptionCallback _CSendExceptionCallback = new ProducerWrap.CSendExceptionCallback(
-          (e) =>
-          {
-              Console.WriteLine($"Exception e");
-          });
         #endregion
         public void Dispose()
         {

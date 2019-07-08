@@ -35,4 +35,20 @@ namespace RocketMQ.NetClient.Interop
         
         LevelNum = 7
     }
+    public enum CLogLevel
+    {
+        E_LOG_LEVEL_FATAL = 1,
+
+        E_LOG_LEVEL_ERROR = 2,
+
+        E_LOG_LEVEL_WARN = 3,
+
+        E_LOG_LEVEL_INFO = 4,
+
+        E_LOG_LEVEL_DEBUG = 5,
+
+        E_LOG_LEVEL_TRACE = 6,
+
+        E_LOG_LEVEL_LEVEL_NUM = 7
+    }
 }

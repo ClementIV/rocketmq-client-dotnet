@@ -20,19 +20,23 @@ using System.Runtime.InteropServices;
 using System.Text;
 using RocketMQ.NetClient.Interop;
 
-namespace RocketMQ.NetClient.Producer
+namespace RocketMQ.NetClient.Message
 {
-    public class DefaultMessageBuilder : IMessageBuilder
+    public class MQMessage : IMessage
     {
+        #region default Options  
         private HandleRef _handleRef;
+        private string MessageBody = "default message body";
+        private string MessageTags = "default_tags";
+        #endregion
 
-        public DefaultMessageBuilder(string topic)
-        {
+        #region Constructor
+        private void MessageInit(string topic) {
             if (string.IsNullOrWhiteSpace(topic))
             {
                 throw new ArgumentException(nameof(topic));
             }
-            
+
             var handle = MessageWrap.CreateMessage(topic);
             this._handleRef = new HandleRef(this, handle);
 
@@ -42,9 +46,29 @@ namespace RocketMQ.NetClient.Producer
                 MessageWrap.DestroyMessage(this._handleRef);
                 throw new Exception($"set message topic error. cpp sdk return code: {result}");
             }
+            this.SetMessageBody(this.MessageBody);
+            this.SetMessageTags(this.MessageTags);
+        }
+        public MQMessage(string topic)
+        {
+            this.MessageInit(topic);
+        }
+        public MQMessage(string topic,string messageBody,string messageTags){
+            this.MessageInit(topic);
+            this.SetMessageBody(messageBody);
+            this.SetMessageTags(MessageTags);
         }
 
-        public IMessageBuilder SetMessageTopic(string topic)
+        #endregion
+
+        #region Get 
+        public HandleRef GetHandleRef() {
+            return this._handleRef;
+        }
+        #endregion
+
+        #region Set Message API
+        public void SetMessageTopic(string topic)
         {
             if (string.IsNullOrWhiteSpace(topic))
             {
@@ -59,10 +83,10 @@ namespace RocketMQ.NetClient.Producer
                 throw new Exception($"set message topic error. cpp sdk return code: {result}");
             }
             
-            return this;
+            return ;
         }
 
-        public IMessageBuilder SetMessageTags(string tags)
+        public void SetMessageTags(string tags)
         {
             if (string.IsNullOrWhiteSpace(tags))
             {
@@ -77,10 +101,10 @@ namespace RocketMQ.NetClient.Producer
                 throw new Exception($"set message tags error. cpp sdk return code: {result}");
             }
             
-            return this;
+            return ;
         }
 
-        public IMessageBuilder SetMessageKeys(string keys)
+        public void SetMessageKeys(string keys)
         {
             if (string.IsNullOrWhiteSpace(keys))
             {
@@ -95,10 +119,10 @@ namespace RocketMQ.NetClient.Producer
                 throw new Exception($"set message keys error. cpp sdk return code: {result}");
             }
             
-            return this;
+            return;
         }
 
-        public IMessageBuilder SetMessageBody(string body)
+        public void SetMessageBody(string body)
         {
             if (string.IsNullOrWhiteSpace(body))
             {
@@ -113,29 +137,32 @@ namespace RocketMQ.NetClient.Producer
                 throw new Exception($"set message body error. cpp sdk return code: {result}");
             }
             
-            return this;
+            return ;
         }
+        /// <summary>
+        /// todo 
+        /// </summary>
+        /// <param name="body"></param>
+        //public void SetByteMessageBody(byte[] body)
+        //{
+        //    if (body == null || body.Length == 0)
+        //    {
+        //        MessageWrap.DestroyMessage(this._handleRef);
+        //        throw new ArgumentException(nameof(body));
+        //    }
 
-        public IMessageBuilder SetByteMessageBody(byte[] body)
-        {
-            if (body == null || body.Length == 0)
-            {
-                MessageWrap.DestroyMessage(this._handleRef);
-                throw new ArgumentException(nameof(body));
-            }
-
-            var byteBody = Encoding.UTF8.GetString(body);
-            var result = MessageWrap.SetByteMessageBody(this._handleRef, byteBody, byteBody.Length);
-            if (result != 0)
-            {
-                MessageWrap.DestroyMessage(this._handleRef);
-                throw new Exception($"set message body error. cpp sdk return code: {result}");
-            }
+        //    var byteBody = Encoding.UTF8.GetString(body);
+        //    var result = MessageWrap.SetByteMessageBody(this._handleRef, byteBody, byteBody.Length);
+        //    if (result != 0)
+        //    {
+        //        MessageWrap.DestroyMessage(this._handleRef);
+        //        throw new Exception($"set message body error. cpp sdk return code: {result}");
+        //    }
             
-            return this;
-        }
+        //    return ;
+        //}
 
-        public IMessageBuilder SetMessageProperty(string key, string value)
+        public void SetMessageProperty(string key, string value)
         {
             if (string.IsNullOrWhiteSpace(key))
             {
@@ -155,10 +182,10 @@ namespace RocketMQ.NetClient.Producer
                 throw new Exception($"set message property error. cpp sdk return code: {result}");
             }
             
-            return this;
+            return ;
         }
-
-        public IMessageBuilder SetDelayTimeLevel(int level)
+       
+        public void SetDelayTimeLevel(int level)
         {
             if (level < 0)
             {
@@ -173,13 +200,9 @@ namespace RocketMQ.NetClient.Producer
                 throw new Exception($"set delay time level error. cpp sdk return code: {result}");
             }
             
-            return this;
+            return ;
         }
-
-        public HandleRef Build()
-        {
-            return this._handleRef;
-        }
+        #endregion
         
         public void Dispose()
         {
@@ -191,7 +214,7 @@ namespace RocketMQ.NetClient.Producer
             }
         }
 
-        ~DefaultMessageBuilder()
+        ~MQMessage()
         {
             this.Dispose();
         }

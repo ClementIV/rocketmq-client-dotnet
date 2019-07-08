@@ -62,14 +62,15 @@
     <Compile Include="Consumer\IPushConsumer.cs" />
     <Compile Include="Consumer\IPushConsumerBuilder.cs" />
     <Compile Include="Consumer\MessageModel.cs" />
+    <Compile Include="Consumer\MQPushConsumer.cs" />
     <Compile Include="Consumer\RocketMQConsumerException.cs" />
     <Compile Include="Interop\ConstValues.cs" />
     <Compile Include="Interop\LogLevel.cs" />
-    <Compile Include="Interop\MessageWrap.cs" />
-    <Compile Include="Interop\ProducerWrap.cs" />
-    <Compile Include="Interop\PushConsumerWrap.cs" />
-    <Compile Include="Producer\DefaultMessageBuilder.cs" />
-    <Compile Include="Producer\IMessageBuilder.cs" />
+    <Compile Include="Message\MessageWrap.cs" />
+    <Compile Include="Producer\ProducerWrap.cs" />
+    <Compile Include="Consumer\PushConsumerWrap.cs" />
+    <Compile Include="Message\MQMessage.cs" />
+    <Compile Include="Message\IMessage.cs" />
     <Compile Include="Producer\IProducer.cs" />
     <Compile Include="Producer\MQProducer.cs" />
     <Compile Include="Producer\RocketMQProducerException.cs" />
@@ -79,5 +80,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -15,10 +15,11 @@
  *  limitations under the License.
  */
 
+using RocketMQ.NetClient.Interop;
 using System;
 using System.Runtime.InteropServices;
 
-namespace RocketMQ.NetClient.Interop
+namespace RocketMQ.NetClient.Consumer
 {
     public static class PushConsumerWrap
     {
@@ -111,4 +112,6 @@ namespace RocketMQ.NetClient.Interop
         
         CLUSTERING = 1
     }
+
+ 
 }

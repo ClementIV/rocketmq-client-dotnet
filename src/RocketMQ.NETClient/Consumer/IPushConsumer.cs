@@ -15,11 +15,12 @@
  *  limitations under the License.
  */
 
-using MessageCallBack = RocketMQ.NetClient.Interop.PushConsumerWrap.MessageCallBack;
+using System;
+using MessageCallBack = RocketMQ.NetClient.Consumer.PushConsumerWrap.MessageCallBack;
 
 namespace RocketMQ.NetClient.Consumer
 {
-    public interface IPushConsumer
+    public interface IPushConsumer:IDisposable
     {
         bool StartPushConsumer();
 

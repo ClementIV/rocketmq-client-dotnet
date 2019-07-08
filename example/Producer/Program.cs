@@ -1,4 +1,5 @@
 ﻿using RocketMQ.NetClient.Interop;
+using RocketMQ.NetClient.Message;
 using RocketMQ.NetClient.Producer;
 using System;
 using System.Collections.Generic;
@@ -32,51 +33,27 @@ namespace Producer
             try {
                 while (true) {
                     // message
-                    var message = MessageWrap.CreateMessage("test");
-                    Console.WriteLine("message intPtr:" + message);
+                    MQMessage message = new MQMessage("test");
 
-                    var p1 = new Program();
-                    var messageIntPtr = new HandleRef(p1, message);
+                    //var setPropertyResult = MessageWrap.SetMessageProperty(messageIntPtr, "key1", "value1");
+                    //Console.WriteLine("set message property result:" + setPropertyResult);
 
-                    var setMessageBodyResult = MessageWrap.SetMessageBody(messageIntPtr, "hello" + Guid.NewGuid());
-                    Console.WriteLine("set message body result:" + setMessageBodyResult);
-
-                    var setTagResult = MessageWrap.SetMessageTags(messageIntPtr, "tag_test");
-                    Console.WriteLine("set message tag result:" + setTagResult);
-
-                    var setPropertyResult = MessageWrap.SetMessageProperty(messageIntPtr, "key1", "value1");
-                    Console.WriteLine("set message property result:" + setPropertyResult);
-
-                    // var setByteMessageBodyResult = MessageWrap.SetByteMessageBody(messageIntPtr, "byte_body", 9);
-                    // Console.WriteLine("set byte message body result:" + setByteMessageBodyResult);
+                   
 
 
                     // SendMessageSync
-                    //var sendResult = producer.SendMessageSync(messageIntPtr);
+                    //var sendResult = producer.SendMessageSync(message);
                     //Console.WriteLine("send result:" + sendResult + ", msgId: " + sendResult.MessageId);
 
                     // SendMessageOneway
-                    //var sendResult = producer.SendMessageOneway(messageIntPtr);
+                    //var sendResult = producer.SendMessageOneway(message);
                     //Console.WriteLine("send result:" + sendResult);
 
                     // SendMessageOneWay
-                    var sendResult = producer.SendMessageOrderly(messageIntPtr,_queueSelectorCallback,"aa");
+                    var sendResult = producer.SendMessageOrderly(message.GetHandleRef(),_queueSelectorCallback,"aa");
                     Console.WriteLine("send result:" + sendResult.MessageId);
 
-                    //SendMessage
-
-                    // var sendResult = producer.SendMessageAsync(
-                    //     messageIntPtr,
-                    //     result =>
-                    //     {
-                    //         Console.WriteLine($"success_callback_msgId: {result.msgId}");
-                    //     },
-                    //     ex =>
-                    //     {
-                    //         Console.WriteLine($"error_callback_msgId: {ex.msg}");
-                    //     }
-                    // );
-                    //Console.WriteLine("send result:" + sendResult);
+                    
 
                     // var pArgs = "args_parameters";
                     // var ptrArgs = Marshal.StringToBSTR(pArgs);

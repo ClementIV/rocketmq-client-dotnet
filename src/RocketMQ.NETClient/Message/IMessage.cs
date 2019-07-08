@@ -18,24 +18,24 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace RocketMQ.NetClient.Producer
+namespace RocketMQ.NetClient.Message
 {
-    public interface IMessageBuilder : IDisposable
+    public interface IMessage : IDisposable
     {
-        IMessageBuilder SetMessageTopic(string topic);
+        void SetMessageTopic(string topic);
 
-        IMessageBuilder SetMessageTags(string tags);
+        void SetMessageTags(string tags);
 
-        IMessageBuilder SetMessageKeys(string keys);
+        void SetMessageKeys(string keys);
 
-        IMessageBuilder SetMessageBody(string body);
+        void SetMessageBody(string body);
+        // todo
+        //void SetByteMessageBody(byte[] body);
 
-        IMessageBuilder SetByteMessageBody(byte[] body);
+        void SetMessageProperty(string key, string value);
 
-        IMessageBuilder SetMessageProperty(string key, string value);
+        void SetDelayTimeLevel(int level);
+           
 
-        IMessageBuilder SetDelayTimeLevel(int level);
-
-        HandleRef Build();
     }
 }

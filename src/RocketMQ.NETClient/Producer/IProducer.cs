@@ -18,7 +18,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using QueueSelectorCallback = RocketMQ.NetClient.Interop.ProducerWrap.QueueSelectorCallback;
+using QueueSelectorCallback = RocketMQ.NetClient.Producer.ProducerWrap.QueueSelectorCallback;
 
 namespace RocketMQ.NetClient.Producer
 {
