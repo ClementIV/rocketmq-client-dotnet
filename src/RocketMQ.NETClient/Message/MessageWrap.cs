@@ -106,5 +106,6 @@ namespace RocketMQ.NetClient.Message
         
         [DllImport(ConstValues.RocketMQDriverDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern long GetMessagePreparedTransactionOffset(IntPtr message);
+
     }
 }

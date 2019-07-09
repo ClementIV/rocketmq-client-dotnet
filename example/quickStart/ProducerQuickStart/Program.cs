@@ -35,12 +35,6 @@ namespace Producer
                     // message
                     MQMessage message = new MQMessage("test");
 
-                    //var setPropertyResult = MessageWrap.SetMessageProperty(messageIntPtr, "key1", "value1");
-                    //Console.WriteLine("set message property result:" + setPropertyResult);
-
-                   
-
-
                     // SendMessageSync
                     //var sendResult = producer.SendMessageSync(message);
                     //Console.WriteLine("send result:" + sendResult + ", msgId: " + sendResult.MessageId);
@@ -52,14 +46,6 @@ namespace Producer
                     // SendMessageOneWay
                     var sendResult = producer.SendMessageOrderly(message.GetHandleRef(),_queueSelectorCallback,"aa");
                     Console.WriteLine("send result:" + sendResult.MessageId);
-
-                    
-
-                    // var pArgs = "args_parameters";
-                    // var ptrArgs = Marshal.StringToBSTR(pArgs);
-                    // var sendResult = ProducerWrap.SendMessageOrderly(producer, messageIntPtr, _queueSelectorCallback,
-                    //     ptrArgs, 1, out var sendResultStruct);
-                    // Console.WriteLine($"send result:{sendResult}, sendResultStruct -> msgId: {sendResultStruct.msgId}, status: {sendResultStruct.sendStatus}, offset: {sendResultStruct.offset}");
 
                     Thread.Sleep(500);
                 }

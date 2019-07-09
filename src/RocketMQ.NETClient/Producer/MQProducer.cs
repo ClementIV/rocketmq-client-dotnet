@@ -360,7 +360,22 @@ namespace RocketMQ.NetClient.Producer
         }
 
 
-        
+        //public bool SendMessageASync(HandleRef message, QueueSelectorCallback callback, string args = "",CSendSuccessCallback sendSuccessCallback,CSendExceptionCallback sendExceptionCallback)
+        //{
+
+        //    if (message.Handle == IntPtr.Zero)
+        //    {
+        //        throw new ArgumentException(nameof(message));
+        //    }
+
+        //    var argsPtr = Marshal.StringToBSTR(args);
+        //    var result = ProducerWrap.SendMessageAsync(this._handleRef, message,callback, argsPtr,sendSuccessCallback, sendExceptionCallback );
+
+        //    return result == 0;
+  
+        //}
+
+
 
         /// <summary>
         /// 单向消息发送

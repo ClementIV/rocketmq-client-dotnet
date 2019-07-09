@@ -46,8 +46,7 @@ namespace RocketMQ.NetClient.Consumer
 
         [DllImport(ConstValues.RocketMQDriverDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetPushConsumerGroupID")]
         internal static extern IntPtr GetPushConsumerGroupIDInternal(IntPtr consumer);
-
-        public static string GetPushConsumerGroupID(IntPtr consumer)
+        public static  string GetPushConsumerGroupID(IntPtr consumer)
         {
             var ptr = GetPushConsumerGroupIDInternal(consumer);
             if (ptr == IntPtr.Zero) return string.Empty;

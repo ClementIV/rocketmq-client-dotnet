@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B67D4F36-156E-4C72-973C-71A221EEA955}</ProjectGuid>
+    <ProjectGuid>{6616A76E-ADC5-4140-96BC-49206B540DE2}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ConsumerQuickStart</RootNamespace>
-    <AssemblyName>ConsumerQuickStart</AssemblyName>
+    <RootNamespace>PullConsumerQuickStart</RootNamespace>
+    <AssemblyName>PullConsumerQuickStart</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

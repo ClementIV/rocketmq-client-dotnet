@@ -32,7 +32,7 @@ namespace RocketMQ.NETClient.Consumer
         #region default Options
         private HandleRef _handleRef;
         private readonly string LogPath = Environment.CurrentDirectory.ToString() + "\\pushConsumer_log.txt";
-        
+
         #endregion
 
         #region Constructor
@@ -58,7 +58,7 @@ namespace RocketMQ.NETClient.Consumer
             this.MQPushConsumerInit(groupId);
         }
 
-        public MQPushConsumer(string groupId,string nameServerAddress)
+        public MQPushConsumer(string groupId, string nameServerAddress)
         {
 
             this.MQPushConsumerInit(groupId);
@@ -90,7 +90,7 @@ namespace RocketMQ.NETClient.Consumer
                 throw new RocketMQConsumerException($"set consumer groupId error. cpp sdk return code {result}");
             }
 
-            return ;
+            return;
         }
 
         public void SetPushConsumerNameServerAddress(string nameServerAddress)
@@ -122,7 +122,7 @@ namespace RocketMQ.NETClient.Consumer
                 throw new RocketMQConsumerException($"set consumer domain error. cpp sdk return code {result}");
             }
 
-            return ;
+            return;
         }
 
         public void SetPushConsumerThreadCount(int threadCount)
@@ -170,7 +170,7 @@ namespace RocketMQ.NETClient.Consumer
                 throw new RocketMQConsumerException($"set consumer instanceName error. cpp sdk return code {result}");
             }
 
-            return ;
+            return;
         }
 
         public void SetPushConsumerSessionCredentials(string accessKey, string secretKey, string channel)
@@ -210,7 +210,7 @@ namespace RocketMQ.NETClient.Consumer
                 throw new RocketMQConsumerException($"set consumer logPath error. cpp sdk return code {result}");
             }
 
-            return ;
+            return;
         }
 
         public void SetPushConsumerLogLevel(LogLevel logLevel)
@@ -226,7 +226,7 @@ namespace RocketMQ.NETClient.Consumer
                 throw new RocketMQConsumerException($"set consumer logLevel error. cpp sdk return code {result}");
             }
 
-            return ;
+            return;
         }
 
         public void SetPushConsumerLogFileNumAndSize(int fileNum, long fileSize)
@@ -246,7 +246,7 @@ namespace RocketMQ.NETClient.Consumer
                 throw new RocketMQConsumerException($"set consumer logFileNumAndSize error. cpp sdk return code {result}");
             }
 
-            return ;
+            return;
         }
 
         public void SetPushConsumerMessageModel(MessageModel messageModel)
@@ -257,7 +257,7 @@ namespace RocketMQ.NETClient.Consumer
                 throw new RocketMQConsumerException($"set consumer logFileNumAndSize error. cpp sdk return code {result}");
             }
 
-            return ;
+            return;
         }
         #endregion
 
@@ -294,7 +294,7 @@ namespace RocketMQ.NETClient.Consumer
 
         #endregion
 
-        
+
 
         #region Push Message API
 
@@ -331,7 +331,7 @@ namespace RocketMQ.NETClient.Consumer
         }
 
         private static readonly PushConsumerWrap.MessageCallBack _callback = new PushConsumerWrap.MessageCallBack(
-            (consumer,message) => {
+            (consumer, message) => {
                 Console.WriteLine($"consumer: {consumer}; messagePtr: {message}");
 
                 var body = MessageWrap.GetMessageBody(message);
@@ -341,10 +341,18 @@ namespace RocketMQ.NETClient.Consumer
                 Console.WriteLine($"message_id: {messageId}");
 
                 return 0;
-             }
+            }
             );
         #endregion
 
+        #region GET CONSUMER API
+
+        public string GetPushConsumerGroupID() {
+            return PushConsumerWrap.GetPushConsumerGroupID(this._handleRef.Handle);
+        }
+
+
+        #endregion
         #region Dispose
         public void Dispose()
         {
