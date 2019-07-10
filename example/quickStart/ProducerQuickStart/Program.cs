@@ -1,4 +1,4 @@
-﻿using RocketMQ.NetClient.Interop;
+﻿
 using RocketMQ.NetClient.Message;
 using RocketMQ.NetClient.Producer;
 using System;

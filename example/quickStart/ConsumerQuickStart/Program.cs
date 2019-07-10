@@ -1,4 +1,5 @@
-﻿using RocketMQ.NetClient.Consumer;
+﻿
+using RocketMQ.NetClient.Consumer;
 using RocketMQ.NetClient.Interop;
 using RocketMQ.NetClient.Message;
 using RocketMQ.NETClient.Consumer;

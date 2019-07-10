@@ -48,7 +48,7 @@ namespace RocketMQ.NETClient.Consumer
                 return false;
             }
 
-            var destroyResult = PullConsumerWrap.DestroyPushConsumer(this._handleRef);
+            var destroyResult = PullConsumerWrap.DestroyPullConsumer(this._handleRef);
 
             return destroyResult == 0;
         }

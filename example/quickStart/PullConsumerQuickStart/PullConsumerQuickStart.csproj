@@ -8,9 +8,10 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>PullConsumerQuickStart</RootNamespace>
     <AssemblyName>PullConsumerQuickStart</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -49,9 +50,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\RocketMQ.NETClient\RocketMQ.NETClient.csproj">
-      <Project>{F95C2026-A21A-4A46-A175-489861CDF3A8}</Project>
-      <Name>RocketMQ.NETClient</Name>
+    <ProjectReference Include="..\..\..\src\RocketMQ.NETClient\RocketMQ.NetClient.csproj">
+      <Project>{7ad1f2eb-be66-43dd-88bb-5f3074874341}</Project>
+      <Name>RocketMQ.NetClient</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

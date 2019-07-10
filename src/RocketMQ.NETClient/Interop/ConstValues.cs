@@ -19,7 +19,7 @@ namespace RocketMQ.NetClient.Interop
 {
     public static class ConstValues
     {
-        public const string RocketMQDriverDllName = "K:\\阿里编程之夏\\coding\\rocketmq-externals\\rocketmq-client-dotnet\\example\\ProducerSample\\bin\\Release\\rocketmq-client-cpp.dll";
+        public const string RocketMQDriverDllName = "CClient\\rocketmq-client-cpp.dll";
 
         public const string DiagnosticListenerName = "rocketmq-driver";
 
