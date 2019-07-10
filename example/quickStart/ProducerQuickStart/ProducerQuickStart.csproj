@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Producer</RootNamespace>
     <AssemblyName>Producer</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <PublishUrl>publish\</PublishUrl>
@@ -129,8 +129,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\..\src\RocketMQ.NETClient\RocketMQ.NetClient.csproj">
-      <Project>{7AD1F2EB-BE66-43DD-88BB-5F3074874341}</Project>
+      <Project>{7ad1f2eb-be66-43dd-88bb-5f3074874341}</Project>
       <Name>RocketMQ.NetClient</Name>
     </ProjectReference>
   </ItemGroup>

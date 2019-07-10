@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>ConsumerQuickStart</RootNamespace>
     <AssemblyName>ConsumerQuickStart</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -33,8 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Extensions.DiagnosticAdapter, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Extensions.DiagnosticAdapter.2.1.0\lib\net461\Microsoft.Extensions.DiagnosticAdapter.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Diagnostics.DiagnosticSource.4.5.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,10 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\RocketMQ.NETClient\RocketMQ.NetClient.csproj">
-      <Project>{7AD1F2EB-BE66-43DD-88BB-5F3074874341}</Project>
+      <Project>{7ad1f2eb-be66-43dd-88bb-5f3074874341}</Project>
       <Name>RocketMQ.NetClient</Name>
     </ProjectReference>
   </ItemGroup>

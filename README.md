@@ -1,12 +1,9 @@
-# rocketmq-client-dotnet
-
- .NET客户端API
- 
+# .NET客户端API
 ## 重构说明
 
 ### 代码逻辑说明
 
-![image](../img/netclient.png)
+![image](https://raw.githubusercontent.com/ClementIV/picture/master/netclient.png)
 
 ### 项目地址
 
@@ -22,18 +19,36 @@
             ├── ConsumerQuickStart PushConsumer Quick Start
             ├── ProducerQuickStart Producer Quick Start
             └── PullConsumerQuickStart PullConsumer Quick Start
-└── src
-     └── RocketMQ.NETClient  NET Client
-        ├── Consumer Consumer API
-        ├── Interop  常量等
-        ├── Message Message API 
-        └── Producer Producer API 
+        └── nugetTest
+                └──  nugetTest Nuget package test.
+    └── src
+         └── RocketMQ.NETClient  NET Client
+            ├── Consumer Consumer API
+            ├── Interop  常量等
+            ├── Message Message API
+            └── Producer Producer API
 
 ```
 
 ## 调试环境快速部署
 
 TODO
+
+## Nuget包
+
+### 包地址
+
+[RocketMQ.NETClient](https://www.nuget.org/packages/RocketMQ.NETClient/1.3.3-beta)
+
+### 说明
+
+![image](https://raw.githubusercontent.com/ClementIV/picture/master/clipboard.png)
+
+### 其他设置
+1. ICON
+2. 公司
+3. owner
+4. 描述信息
 
 ## API 对齐说明
 
@@ -94,7 +109,7 @@ TODO
 
     // 创建一个消息 message
     MQMessage message = new MQMessage("test");
-    
+
     // 使用producer发送消息
     // SendMessageSync
     var sendResult = producer.SendMessageSync(message);
@@ -164,22 +179,22 @@ TODO
 
     //填充消息队列
     CMessageQueue[] msgs = consumer.FetchSubscriptionMessageQueues("test");
-                
+
 
     for (int j = 0; j < msgs.Length; j++)
     {
         int flag = 0;
-                   
+
 
         Console.WriteLine("msg topic : " + new string(msgs[j].topic));
 
         MessageQueue mq = new MessageQueue { topic = new string(msgs[j].topic), brokeName = new string(msgs[j].brokerName), queueId = msgs[j].queueId };
-                    
+
         while (true)
         {
             try
             {
-                        
+
                 //主动拉取消费
                 CPullResult cPullResult = consumer.Pull(mq,msgs[j], "", MQPullConsumer.getMessageQueueOffset(mq), 32);
                 Console.WriteLine(new string(msgs[j].topic) + " status : " + cPullResult.pullStatus +"Max offset "+ cPullResult.maxOffset + " offset: " + cPullResult.nextBeginOffset + " Quene Id" + msgs[j].queueId);
@@ -218,7 +233,7 @@ TODO
             }
         }
 
-                  
+
     }
 ```
 
@@ -227,6 +242,12 @@ TODO
 [PullConsumerQuickStart](https://github.com/ClementIV/rocketmq-client-dotnet/tree/master/example/quickStart/PullConsumerQuickStart)
 
 
+## 计划
 
- 
+1. PHP 客户端
+2. Connect的学习整理
 
+
+## 问题
+
+1. 需要一些Connect的学习资料
