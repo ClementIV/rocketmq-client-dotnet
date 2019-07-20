@@ -277,3 +277,101 @@ void SetPushConsumerNameServerDomain(string domain)
 * **Parameters**
 `nameServerAddress`
 nameServer地址信息
+
+#### SetPushConsumerThreadCount
+
+```C#
+void SetPushConsumerThreadCount(int threadCount)
+```
+* **SetPushConsumerThreadCount**
+   设置PushConsumer的线程数
+* **Parameters**
+`threadCount`
+线程数
+
+#### SetPushConsumerMessageBatchMaxSize
+
+```C#
+void SetPushConsumerMessageBatchMaxSize(int batchSize)
+```
+* **SetPushConsumerMessageBatchMaxSize(**
+   设置PushConsumer的消息的batch最大值
+* **Parameters**
+`batchSize`
+大小
+
+#### SetPushConsumerInstanceName
+
+```C#
+void SetPushConsumerInstanceName(string instanceName)
+```
+* **SetPushConsumerInstanceName**
+   设置PushConsumer的实例名称
+* **Parameters**
+`instanceName`
+实例名称
+
+#### SetPushConsumerSessionCredentials
+
+```C#
+void SetPushConsumerSessionCredentials(string accessKey,string secretKey,string channel)
+```
+* **SetPushConsumerSessionCredentials**
+   设置PushConsume的认证信息，使用rocketmq时必须填写
+* **Parameters**
+`accessKey`
+阿里云accessKey
+`secretKey`
+阿里云secretKey
+`channel`
+一般默认值为`ALIYUN`
+
+#### SetPushConsumerLogPath
+
+```C#
+void SetPushConsumerLogPath(string logPath)
+```
+* **SetPushConsumerLogPath**
+   设置PushConsume的日志路径
+* **Parameters**
+`logPath`
+ PushConsume 的日志路径，默认值为运行环境
+
+#### SetPushConsumerLogLevel
+
+```C#
+void SetPushConsumerLogLevel(string logLevel)
+```
+* **SetPushConsumerLogLevel**
+   设置PushConsume的日志级别
+* **Parameters**
+`logLevel`
+ PushConsume 的日志级别
+
+#### SetPushConsumerLogLevel
+
+```C#
+void SetPushConsumerLogFileNumAndSize(int fileNum, long fileSize)
+```
+* **SetPushConsumerLogFileNumAndSize**
+   设置PushConsume的日志文件数量和大小
+* **Parameters**
+`fileNum`
+ PushConsume 的日志文件数量
+ `fileSize`
+文件大小
+
+#### SetPushConsumerMessageModel
+
+```C#
+void SetPushConsumerMessageModel(MessageModel messageModel)
+```
+* **SetPushConsumerMessageModel**
+   设置PushConsume的消息类型
+* **Parameters**
+`messageModel`
+枚举值，PushConsume 的消息模式 分别为 `Broadcasting`和`Clustering`两种类型
+
+
+### 开启和关闭PushConsumer
+
