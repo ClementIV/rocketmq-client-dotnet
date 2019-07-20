@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="RocketMQ.NetClient" Version="1.3.3-beta" />
+    <PackageReference Include="RocketMQ.NetClient" Version="0.0.1-beta" />
   </ItemGroup>
 
   <ItemGroup>

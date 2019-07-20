@@ -214,9 +214,5 @@ namespace RocketMQ.NetClient.Message
             }
         }
 
-        ~MQMessage()
-        {
-            this.Dispose();
-        }
     }
 }

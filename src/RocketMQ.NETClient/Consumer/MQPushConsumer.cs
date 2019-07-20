@@ -364,5 +364,6 @@ namespace RocketMQ.NETClient.Consumer
             }
         }
         #endregion
+        
     }
 }

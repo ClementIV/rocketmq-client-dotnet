@@ -75,7 +75,7 @@ namespace RocketMQ.NetClient.Producer
         //send
         
         [DllImport(ConstValues.RocketMQDriverDllName,CallingConvention = CallingConvention.Cdecl)]
-        public static extern int SendMessageSync(HandleRef producer, HandleRef message, [Out]out CSendResult result);
+        public static extern int SendMessageSync(HandleRef producer, HandleRef message, ref CSendResult result);
         
         //todo 接口函数未实现
         [DllImport(ConstValues.RocketMQDriverDllName,CallingConvention = CallingConvention.Cdecl)]

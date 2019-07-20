@@ -1,4 +1,5 @@
 # .NET客户端API
+
 ## 重构说明
 
 ### 代码逻辑说明
@@ -7,7 +8,7 @@
 
 ### 项目地址
 
-[ClementIV/rocketmq-client-dotnet](https://github.com/ClementIV/rocketmq-client-dotnet)
+[rocketmq-client-dotnet](https://github.com/apache/rocketmq-externals/tree/master/rocketmq-client-dotnet)
 
 ### 项目目录简介
 
@@ -15,46 +16,53 @@
 .
 ├── rocketmq-client-dotnet RocketMQ .NET Client 文件
     └── example
-        └── quickStart
-            ├── ConsumerQuickStart PushConsumer Quick Start
-            ├── ProducerQuickStart Producer Quick Start
-            └── PullConsumerQuickStart PullConsumer Quick Start
+        └── demo
+            ├── ConsumerDemo PushConsumer Demo
+            ├── ProducerDemo Producer Demo
+            └── PullConsumerDemo PullConsumer Demo
         └── nugetTest
                 └──  nugetTest Nuget package test.
     └── src
-         └── RocketMQ.NETClient  NET Client
+        └── RocketMQ.NETClient  NET Client
             ├── Consumer Consumer API
-            ├── Interop  常量等
+            ├── Interop  Const Value
             ├── Message Message API
             └── Producer Producer API
 
 ```
 
-## 调试环境快速部署
+## QuickStart
 
-TODO
+[QuickStart](./docs/QuickStart.md)
+
+## API参考
+
 
 ## Nuget包
 
-### 包地址
 
-[RocketMQ.NETClient](https://www.nuget.org/packages/RocketMQ.NETClient/1.3.3-beta)
+### 1. 包地址
 
-### 说明
+[rocketmq-client-dotnet](https://www.nuget.org/packages/rocketmq-client-dotnet/0.1.1)
 
-![image](https://raw.githubusercontent.com/ClementIV/picture/master/clipboard.png)
+### 2. 说明
 
-### 其他设置
-1. ICON
-2. 公司
-3. owner
-4. 描述信息
+* 使用说明
+    [QuickStart](./docs/QuickStart.md)
+* 使用要求
+```
+   .NET FrameWork >=4.6.1
+
+or 
+
+   .NET Standard >=2.0 
+```
 
 ## API 对齐说明
 
 |功能|C|.NET|
 |-|-|-|
-|同步消息发送 | Y | Y|
+| 同步消息发送 | Y | Y|
 |顺序消息发送 | Y | Y|
 |单向消息发送 | Y | Y|
 |拉取消息消费 | Y | Y    |
@@ -78,21 +86,88 @@ TODO
 示例代码：
 
 ```c#
-    //创建一个 producerBuilder
-    DefaultProducerBuilder producerBuilder = new  DefaultProducerBuilder("group name",null,null);
+    class MainClass
+    {
+        private static ProducerWrap.QueueSelectorCallback _queueSelectorCallback = new ProducerWrap.QueueSelectorCallback(
+            (size, message, args) =>
+            {
+                Console.WriteLine($"size: {size}, message: {message}, ptr: {args}");
+                
+                return 0;
+            });
+        
+        public static void Main(string[] args)
+        {
+            Console.Title = "Producer";
 
-    //设置想要生成的 producerBuilder 参数
-    producerBuilder = producerBuilder.SetProducerNameServerAddress("127.0.0.1:9876");
-    //··· 其他的一些设置
+            Console.WriteLine("Start create producer.");
+            var producerPtr = ProducerWrap.CreateProducer("GID_test");
+            if (producerPtr == IntPtr.Zero)
+            {
+                Console.WriteLine("zero. Oops.");
+            }
 
-    // 函数返回一个 IProducer 实例 producer
-    IProducer producer = producerBuilder.Builder();
+            Console.WriteLine(producerPtr.ToString());
+            Console.WriteLine("end create producer.");
 
-    // 使用producer发送消息
-    producer.StartProducer();
+            var p = new MainClass();
+            var producer = new HandleRef(p, producerPtr);
+            try
+            {
+                var setNameServerAddressResult = ProducerWrap.SetProducerNameServerAddress(producer, "127.0.0.1：9876");
+                Console.WriteLine("set name server address result:" + setNameServerAddressResult);
 
-    var sendResult =   producer.SendMessageSync(producer, messageIntPtr, out CSendResult sendResultStruct);
+                var setProducerLogPathResult = ProducerWrap.SetProducerLogPath(producer, "C:/rocketmq_log.txt");
+                Console.WriteLine("set producer log path result:" + setProducerLogPathResult);
+
+                var setLogLevelResult = ProducerWrap.SetProducerLogLevel(producer, CLogLevel.E_LOG_LEVEL_TRACE);
+                Console.WriteLine("set producer log level result:" + setLogLevelResult);
+             
+
+                var startResult = ProducerWrap.StartProducer(producer);
+                Console.WriteLine("start result:" + startResult);
+
+                while (true)
+                {
+                    // message
+                    var message = MessageWrap.CreateMessage("Test");
+                    Console.WriteLine("message intPtr:" + message);
+
+                    var p1 = new MainClass();
+                    var messageIntPtr = new HandleRef(p1, message);
+
+                    var setMessageBodyResult = MessageWrap.SetMessageBody(messageIntPtr, "hello" + Guid.NewGuid());
+                    Console.WriteLine("set message body result:" + setMessageBodyResult);
+
+                    var setTagResult = MessageWrap.SetMessageTags(messageIntPtr, "tag_test11");
+                    Console.WriteLine("set message tag result:" + setTagResult);
+
+                    var setPropertyResult = MessageWrap.SetMessageProperty(messageIntPtr, "key1", "value1");
+                    Console.WriteLine("set message property result:" + setPropertyResult);
+
+
+                   //SendMessageSync
+                   var sendResult = ProducerWrap.SendMessageSync(producer, messageIntPtr, out CSendResult sendResultStruct);
                     Console.WriteLine("send result:" + sendResult + ", msgId: " + sendResultStruct.msgId.ToString());
+
+                   {sendResultStruct.sendStatus}, offset: {sendResultStruct.offset}");
+
+                    Thread.Sleep(500);
+                }
+
+                var shutdownResult = ProducerWrap.ShutdownProducer(producer);
+                Console.WriteLine("shutdown result:" + shutdownResult);
+
+                var destoryResult = ProducerWrap.DestroyProducer(producer);
+                Console.WriteLine("destory result:" + destoryResult);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            Console.ReadKey(true);
+        }
+    }
 
 ```
 
@@ -115,10 +190,6 @@ TODO
     var sendResult = producer.SendMessageSync(message);
     Console.WriteLine("send result:" + sendResult + ", msgId: " + sendResult.MessageId);
 ```
-
-### 对应Producer项目
-
-[ProducerQuickStart](https://github.com/ClementIV/rocketmq-client-dotnet/tree/master/example/quickStart/ProducerQuickStart)
 
 ## PushConsumer使用说明(推荐使用)
 
@@ -155,10 +226,6 @@ TODO
     Console.WriteLine($"start push consumer ptr: {result}");
 
 ```
-### 对应项目
-
-[ConsumerQuickStart](https://github.com/ClementIV/rocketmq-client-dotnet/tree/master/example/quickStart/ConsumerQuickStart)
-
 
 ## PullConsumer 使用说明
 
@@ -237,17 +304,3 @@ TODO
     }
 ```
 
-### 项目地址
-
-[PullConsumerQuickStart](https://github.com/ClementIV/rocketmq-client-dotnet/tree/master/example/quickStart/PullConsumerQuickStart)
-
-
-## 计划
-
-1. PHP 客户端
-2. Connect的学习整理
-
-
-## 问题
-
-1. 需要一些Connect的学习资料

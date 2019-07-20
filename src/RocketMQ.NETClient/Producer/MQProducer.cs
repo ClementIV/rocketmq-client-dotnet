@@ -54,7 +54,11 @@ namespace RocketMQ.NetClient.Producer
         {
             this.handleInit(groupName,diagnosticListener);
         }
-        
+        //public MQProducer(string groupName, string nameServerDomain)
+        //{
+        //    this.handleInit(groupName, null);
+        //    this.SetProducerNameServerDomain(nameServerDomain);
+        //}
         public MQProducer(string groupName,string nameServerAddress, DiagnosticListener diagnosticListener = null)
         {
             this.handleInit(groupName,diagnosticListener);
@@ -346,10 +350,15 @@ namespace RocketMQ.NetClient.Producer
                 throw new ArgumentException(nameof(message));
             }
 
-            
-            var result = ProducerWrap.SendMessageSync(this._handleRef, message, out CSendResult sendResultStruct);
-
-            return result == 0
+            try
+            {
+                CSendResult sendResultStruct = new CSendResult();
+                var result = ProducerWrap.SendMessageSync(this._handleRef, message,ref sendResultStruct);
+                if (result != 0)
+                {
+                    throw new RocketMQProducerException($"set producer sendMessageTimeout error. cpp sdk return code: {result}");
+                }
+                return result == 0
                 ? new SendResult
                 {
                     SendStatus = sendResultStruct.sendStatus,
@@ -357,6 +366,13 @@ namespace RocketMQ.NetClient.Producer
                     MessageId = sendResultStruct.msgId
                 }
                 : null;
+            }
+            catch (Exception e) {
+                throw new Exception(e.Message);
+            }
+           
+
+            
         }
 
 
@@ -453,6 +469,7 @@ namespace RocketMQ.NetClient.Producer
                 GC.SuppressFinalize(this);
             }
         }
+       
 
     }
 
