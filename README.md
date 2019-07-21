@@ -1,4 +1,4 @@
-# .NET客户端API
+# .NET客户端说明
 
 ## 重构说明
 
@@ -35,7 +35,9 @@
 
 [QuickStart](./docs/QuickStart.md)
 
-## API参考
+## API参考手册
+
+[API参考手册](./docs/QuickStart.md)
 
 
 ## Nuget包
